@@ -107,9 +107,8 @@ app.get("/text/emotion", (req,res) => {
         {
             "text": textToAnalyze,
             "features": {
-                "keywords": {
-                                "emotion": true,
-                                "limit": 1
+                "emotion": {
+                                "limit": 5
                             }
             }
         }
@@ -119,10 +118,9 @@ app.get("/text/emotion", (req,res) => {
      naturalLanguageUnderstanding.analyze(analyzeParams)
      .then(analysisResults => {
         //Print the JSON returned by NLU instance as a formatted string
-        //console.log(JSON.stringify(analysisResults.result.keywords[0].emotion,null,2));
-        console.log(analysisResults.result.keywords);
+        console.log(JSON.stringify(analysisResults.result.emotion.document.emotion));
         //Please refer to the image to see the order of retrieval
-        return res.send(analysisResults.result.keywords[0].emotion,null,2);
+        return res.send(analysisResults.result.emotion.document.emotion,null,2);
      })
      .catch(err => {
      return res.send("Could not do desired operation "+err);
@@ -130,15 +128,12 @@ app.get("/text/emotion", (req,res) => {
 });
 
 app.get("/text/sentiment", (req,res) => {
-    console.log(req.query);
     let textToAnalyze = req.query.text;
     const analyzeParams = 
         {
             "text": textToAnalyze,
             "features": {
-                "keywords": {
-                                "sentiment": true,
-                                "limit": 1
+                "sentiment": {
                             }
             }
         }
@@ -148,10 +143,9 @@ app.get("/text/sentiment", (req,res) => {
      naturalLanguageUnderstanding.analyze(analyzeParams)
      .then(analysisResults => {
         //Print the JSON returned by NLU instance as a formatted string
-        //console.log(JSON.stringify(analysisResults.result.keywords[0].sentiment,null,2));
-        console.log(analysisResults.result.keywords);
+        console.log(JSON.stringify(analysisResults.result.sentiment.document));
         //Please refer to the image to see the order of retrieval
-        return res.send(analysisResults.result.keywords[0].sentiment,null,2);
+        return res.send(analysisResults.result.sentiment.document);
      })
      .catch(err => {
      return res.send("Could not do desired operation "+err);
